@@ -5,8 +5,8 @@ import playIcon from '../assets/play_button.svg';
 import stopIcon from '../assets/stop_button.svg';
 
 const LiveRadioButton = () => {
+  const audioRef = useRef<HTMLAudioElement | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
-  const audioRef = useRef(null);
 
   const handlePlayPause = () => {
     if (audioRef.current) {
