@@ -9,14 +9,14 @@ const LiveRadioButton = () => {
   const audioRef = useRef(null);
 
   const handlePlayPause = () => {
-    if (!isPlaying) {
-      // Play the audio stream
-      audioRef.current.play();
-      setIsPlaying(true);
-    } else {
-      // Pause the audio stream
-      audioRef.current.pause();
-      setIsPlaying(false);
+    if (audioRef.current) {
+      if (!isPlaying) {
+        audioRef.current.play();
+        setIsPlaying(true);
+      } else {
+        audioRef.current.pause();
+        setIsPlaying(false);
+      }
     }
   };
 
