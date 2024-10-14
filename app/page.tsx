@@ -1,5 +1,6 @@
 "use client"
-import LiveRadioButton from './components/live-radio-button';
+import LiveRadioButton from './components/LiveRadioButton';
+import LiveChat from './components/LiveChat';
 import Image from 'next/image';
 
 import logo from './assets/logo_white_full.png';
@@ -11,10 +12,11 @@ export default function Home() {
         <Image src={logo} alt="Xlair radio logo" width={288} />
         <Image src={logo} alt="Xlair radio logo" className="blur-xl opacity-35 absolute" width={288} />
         <div className="w-72 flex ">
-        <p className="max-w-72 text-xs tracking-tighter">Xl Air is a platform for anyone who likes to <span className="font-bold">experiment</span> with <span className="font-bold">sound</span>. It is an acceccible multidisciplinary hotbed and it is also your playground.</p>
+        <p className="max-w-72 text-xs tracking-tighter">Xl Air is a platform for anyone who likes to <span className="font-bold">experiment</span> with <span className="font-bold">sound</span>. It is an accessible multidisciplinary hotbed and it is also your playground.</p>
         </div>
-        <div className="w-72 justify-center flex mt-6">
+        <div className="w-72 justify-center flex flex-col gap-8 mt-6">
           <LiveRadioButton />
+          <LiveChat/>
         </div>
       </main>
     </div>
