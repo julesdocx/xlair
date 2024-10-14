@@ -21,7 +21,7 @@ const LiveRadioButton = () => {
   };
 
   return (
-    <div className="radio-button-container">
+    <div className="flex justify-center">
       <audio ref={audioRef} src="https://kioskradiobxl.out.airtime.pro/kioskradiobxl_b" />
       <button onClick={handlePlayPause} className="bg-green-200 p-2 pl-4 pr-4 rounded-xl hover:bg-green-300">
         {isPlaying ? (
