@@ -1,0 +1,44 @@
+{
+  config: {
+    url: 'https://www.googleapis.com/calendar/v3/users/me/calendarList?maxResults=5&showHidden=true',
+    method: 'GET',
+    userAgentDirectives: [ [Object] ],
+    paramsSerializer: [Function (anonymous)],
+    headers: {
+      'x-goog-api-client': 'gdcl/5.1.0 gl-node/22.0.0 auth/7.14.1',
+      'Accept-Encoding': 'gzip',
+      'User-Agent': 'google-api-nodejs-client/5.1.0 (gzip)',
+      Authorization: 'Bearer ya29.c.c0ASRK0GYrEz6InH92BFbpepY7Hp-TGRBKDqumA9aC0SQu-wg_NZu61ytc-ODa-nk3IQZwC41Wn4vLenlqivHt80S2vT093Y-IxgChpyFMnkwgkXBY4H2dUvYPvbM3X3sK8TKu8WEOBU1NV0z0sQvcwx7e5rMSpJEUhIweZrhhniwMobus3vUriejMUSRJCisAt5dg5VsG7qAaMIi22cehVymRUKXvVsWrzMQWBfzPTc1_9pS4Gg2-GjHReCHzSM1catYhkRRoIh8MEarLnsboaA1eb_zXUfkry2Ux_1f2tQhYU2Vg7kogobFF-gnhMISBqb6n0oCRVy5DGyhe6SfauYS6_4HHGd7Bdlo808Rt9KfXg-3YkOo7w-KhE385D5pecmcFgfyqo_9xRBVbIah3qw94jn0mxhd5S9blWBShFzQxOVohB5yBBgVq9-BaXeZazmhyXc0ttJo4o-j7th0i2x6ROpVqB-hjq43lFtmwJS_z48S59g_VZz17bOUa89Bd4V9Ixuk3UhcYkV9JmOpfQQSh3yR6dButQlehZ0JveXWnfrF1Rm8rO9zUw7fbn-n556Bjir08rbZ2mYUeQY4s76pJ9pubJ5dYr3s_F8mW4_8JU9pMUzV8gv2byRdbwepFQYFiVl1tIk_Vnf-n-VgO8UJbw9Rk63BS8WRoS63kUz1Szcee12XYtFvkgoBUzMu8hdYgZj7kS3nRVFp2mFInb1F9kBysIXS4mp9u1fSiio7wgSS2ev7gf3-_IoS9XbXyvdUtRSJO3pIXYRweQdJnrqmq3mFpedqY_mczc7eB1j3om6ZmxR-2w33dgwx-rXIvbd4hfe18r-6mUqvOuIiod_O63Z3jxIhz7BWb0uOz3mIcV-OjWrjvJVM_p3V3zaIUtfwM_zwl_ajrplaaXYb87hm1vWnn2-_4863je1kBZuFtamWxFtFOFFo7a5isurk5Ry9O-0SewWs7pc6XmxFmmBw3fiFk-lFd29-B921h27g564Wskke5t7M',
+      Accept: 'application/json'
+    },
+    params: { maxResults: 5, showHidden: true },
+    validateStatus: [Function (anonymous)],
+    retry: true,
+    responseType: 'json'
+  },
+  data: {
+    kind: 'calendar#calendarList',
+    etag: '"p330alht5h278i0o"',
+    nextSyncToken: 'CMCqx6WIjokDEkp4bC1haXItY2FsLXNlcnZpY2UtYWNjb3VudEB4bC1haXItY2FsZW5kYXItc2VydmljZS5pYW0uZ3NlcnZpY2VhY2NvdW50LmNvbQ==',
+    items: []
+  },
+  headers: {
+    'alt-svc': 'h3=":443"; ma=2592000,h3-29=":443"; ma=2592000',
+    'cache-control': 'private, max-age=0, must-revalidate, no-transform',
+    'content-encoding': 'gzip',
+    'content-type': 'application/json; charset=UTF-8',
+    date: 'Mon, 14 Oct 2024 14:36:13 GMT',
+    expires: 'Mon, 14 Oct 2024 14:36:13 GMT',
+    server: 'ESF',
+    'transfer-encoding': 'chunked',
+    vary: 'Origin, X-Origin, Referer',
+    'x-content-type-options': 'nosniff',
+    'x-frame-options': 'SAMEORIGIN',
+    'x-xss-protection': '0'
+  },
+  status: 200,
+  statusText: 'OK',
+  request: {
+    responseURL: 'https://www.googleapis.com/calendar/v3/users/me/calendarList?maxResults=5&showHidden=true'
+  }
+}
