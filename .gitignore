@@ -13,6 +13,9 @@
 /.next/
 /out/
 
+# next.js auth routes
+# /app/api/auth/*
+
 # production
 /build
 
