@@ -62,8 +62,15 @@ export const listEvents = async (
       singleEvents: true,
       orderBy: 'startTime',
     });
-
-    console.log(response.data.items);
+    
+    const logArray: { title: string | null | undefined; start: calendar_v3.Schema$EventDateTime | undefined; end: calendar_v3.Schema$EventDateTime | undefined; }[] | undefined = response.data.items?.map((item) => {
+      return {
+        title: item.summary,
+        start: item.start,
+        end: item.end
+      };
+    })
+    console.log(logArray);
 
     return response.data.items || [];
   } catch (error) {
