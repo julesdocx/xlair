@@ -3,6 +3,7 @@ import LiveRadioButton from './components/live-radio-button';
 import Image from 'next/image';
 
 import logo from './assets/logo_white_full.png';
+import CalendarComponent from './components/CalendarComponent';
 
 export default function Home() {
   return (
@@ -15,6 +16,9 @@ export default function Home() {
         </div>
         <div className="w-72 justify-center flex mt-6">
           <LiveRadioButton />
+        </div>
+        <div className='w-full'>
+          <CalendarComponent/>
         </div>
       </main>
     </div>
