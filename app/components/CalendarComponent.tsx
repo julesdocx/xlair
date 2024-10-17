@@ -89,22 +89,22 @@ const CalendarComponent = () => {
 
           {/* Desktop (Timetable Layout) */}
           <div className="hidden md:block w-full">
-            <div className="grid grid-cols-7 gap-4 h-[60vh] w-full">
+            <div className="grid grid-cols-7 relative gap-4 h-[60vh] w-full">
               {/* Left side column with time labels */}
-              <div className="hidden md:block">
+              <div className="absolute left-[-47px] select-none"> {/* Modified: First column for hours */}
                 {hours.map(hour => (
-                  <div key={hour} className="h-[4vh] border-b text-sm text-gray-700"> {/* Modified */}
+                  <div key={hour} className="h-[4vh] border-b text-sm text-gray-700 flex items-center justify-end pr-2">
                     {format(new Date(2022, 1, 1, hour, 0), 'h a')}
                   </div>
                 ))}
               </div>
 
               {days.map(day => (
-                <div key={day.toString()} className="relative border border-gray-200 rounded-lg w-full">
-                  <h2 className="text-center text-lg font-semibold py-2 border-b">
+                <div key={day.toString()} className="col-span-1 relative border-l border-gray-200"> {/* Modified: Grid for each day */}                  
+                  <h2 className="text-center text-lg font-semibold py-2 border-b sticky top-0">
                     {format(day, 'EEEE, MMMM d')}
                   </h2>
-                  <div className="relative h-full">
+                  <div className="relative grid grid-rows-[repeat(24,_4vh)] h-full"> {/* Modified: 24 rows for 24 hours */}                    
                     {events
                       .filter(event => isSameDay(new Date(event.startTime), day))
                       .map(event => {
