@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { CalendarEvent } from '../types';
 import { formatEvents } from '../utils';
-import { addDays, format, isSameDay, isAfter, startOfDay, getHours} from 'date-fns';
+import { addDays, format, isSameDay, isAfter, startOfDay, getHours, getMinutes} from 'date-fns';
 
 const CalendarComponent = () => {
   const [events, setEvents] = useState<CalendarEvent[]>([]);
@@ -43,12 +43,28 @@ const CalendarComponent = () => {
   }, new Date(events[0]?.startTime || new Date())); // Start with the first event as the initial value
 
   const earliestHour = getHours(earliestStartTime);  // Get the hour of the earliest event
-  // const earliestMinute = getMinutes(earliestStartTime);  // Get the minute of the earliest event
 
-  // Helper to generate time labels for the left side
-  const hours = Array.from({ length: 24 - earliestHour }, (_, i) => earliestHour + i); // Modified
+  const totalHours = 24 - earliestHour;
+  const hours = Array.from({ length: totalHours }, (_, i) => earliestHour + i); // Modified
 
-  
+  console.log(`earliest hour: ${earliestHour}\nhours: ${hours}`);
+   
+  // Utility function to handle row calculation
+  const calculateRowPosition = (title: string, date: Date, isEnd: boolean = false) => {
+    const hour = getHours(date);
+    const minutes = getMinutes(date);
+    const hasHalfHour = Math.floor(minutes / 30) == 1 ? true : false;
+
+    if (hour === 0) {
+      return totalHours * 2;
+    }
+
+    console.log(`hour: ${hour}\nminutes: ${minutes}`)
+    const position = ((hour - earliestHour) * 2) + (hasHalfHour ? 1 : 0) + 1; // Each row represents 30 minutes, +2 for header
+    console.log(`${isEnd === true ? "end" : "start"}position for ${title}: ${position}`);
+    return position;
+  };
+
   return (
     <div className="container mx-auto py-8 px-4">
       <h1 className="text-2xl font-bold mb-4">Schedule</h1>
@@ -104,30 +120,35 @@ const CalendarComponent = () => {
                   <h2 className="text-center text-lg font-semibold py-2 border-b sticky top-0">
                     {format(day, 'EEEE, MMMM d')}
                   </h2>
-                  <div className="relative grid grid-rows-[repeat(24,_4vh)] h-full"> {/* Modified: 24 rows for 24 hours */}                    
+                  <div 
+                    className={`relative grid h-full`}
+                    style={{
+                      gridTemplateRows: `repeat(${totalHours * 2}, minmax(0, 50px))`,
+                    }}
+                  > {/* Modified: 24 rows for 24 hours */}                    
                     {events
                       .filter(event => isSameDay(new Date(event.startTime), day))
                       .map(event => {
                         const eventStart = new Date(event.startTime);
                         const eventEnd = new Date(event.endTime);
-
-                        // Calculate event top position based on start time (for a 24h timetable)
-                        const startHours = eventStart.getHours() + eventStart.getMinutes() / 60;
-                        const endHours = eventEnd.getHours() + eventEnd.getMinutes() / 60;
-                        const top = ((startHours - earliestHour) / (24 - earliestHour)) * 100;  // Adjust based on earliest hour
-                        const height = ((endHours - startHours) / (24 - earliestHour)) * 100;
+                        const rowStart = calculateRowPosition(event.title, eventStart);
+                        const rowEnd = calculateRowPosition(event.title, eventEnd, true);
 
                         return (
-                          <a
+                          <div                             
                             key={event.id}
+                            className={`bg-blue-100 hover:bg-blue-200 rounded-lg p-2 shadow-md overflow-hidden`}
+                            style={{
+                              gridRowStart: rowStart,
+                              gridRowEnd: rowEnd
+                            }}
+
+                          >
+                          <a
                             href={event.htmlLink || ""}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="text-black absolute left-0 right-0 bg-blue-100 hover:bg-blue-200 rounded-lg p-2 shadow-md overflow-hidden"
-                            style={{
-                              top: `${top}%`,
-                              height: `${height}%`,
-                            }}
+                            className="text-black "
                           >
                             <p className="font-bold">{event.title}</p>
                             <p className="text-sm">
@@ -136,6 +157,7 @@ const CalendarComponent = () => {
                             </p>
                             <p className="text-xs text-gray-600 truncate">{event.description}</p>
                           </a>
+                          </div>
                         );
                       })}
                   </div>
