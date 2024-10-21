@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { CalendarEvent } from '../types';
-import { formatEvents } from '../utils';
+import { dateInDutch, formatEvents } from '../utils';
 import { addDays, format, isSameDay, isAfter, startOfDay, getHours, getMinutes} from 'date-fns';
 
 const CalendarComponent = () => {
@@ -110,7 +110,7 @@ const CalendarComponent = () => {
               <div className="absolute left-[-47px] select-none"> {/* Modified: First column for hours */}
                 {hours.map(hour => (
                   <div key={hour} className="h-[4vh] border-b text-sm text-gray-700 flex items-center justify-end pr-2">
-                    {format(new Date(2022, 1, 1, hour, 0), 'h a')}
+                    {format(new Date(2024, 1, 1, hour, 0), 'HH:mm')}
                   </div>
                 ))}
               </div>
@@ -118,7 +118,7 @@ const CalendarComponent = () => {
               {days.map(day => (
                 <div key={day.toString()} className="col-span-1 relative border-l border-gray-200"> {/* Modified: Grid for each day */}                  
                   <h2 className="text-center text-lg font-semibold py-2 border-b sticky top-0">
-                    {format(day, 'EEEE, MMMM d')}
+                    {dateInDutch(day)}
                   </h2>
                   <div 
                     className={`relative grid h-full`}

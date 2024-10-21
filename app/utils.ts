@@ -1,3 +1,4 @@
+import { format } from "date-fns";
 import { CalendarEvent } from "./types";
 import { calendar_v3 } from 'googleapis';
 
@@ -30,3 +31,27 @@ export const formatEvents = (events: calendar_v3.Schema$Event[]): CalendarEvent[
 
   return formattedEvents;
 };
+
+export const dateInDutch = (day: Date): string => {
+  const ISODayOfWeek = Number(format(day, 'i'));
+  const dayMonth = format(day, 'dd/MM');
+  const dutchWeekdays = [
+    'Maandag',
+    'Disndag',
+    'Woensdag',
+    'Donderdag',
+    'Vrijdag',
+    'Zaterdag',
+    'Zondag'
+  ];
+
+  if (typeof ISODayOfWeek !== "number" ) {
+    throw Error;
+  }
+
+  const mappedDay = dutchWeekdays[ISODayOfWeek  - 1];
+
+  const formattedDate = `${mappedDay} ${dayMonth}`;
+  return formattedDate;
+
+}
