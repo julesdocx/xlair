@@ -105,7 +105,7 @@ const CalendarComponent = () => {
 
           {/* Desktop (Timetable Layout) */}
           <div className="hidden md:block w-full">
-            <div className="grid grid-cols-7 relative gap-4 h-[60vh] w-full">
+            <div className="grid grid-cols-7 relative h-[60vh] w-full">
               {/* Left side column with time labels */}
               <div className="absolute left-[-47px] select-none"> {/* Modified: First column for hours */}
                 {hours.map(hour => (
@@ -124,6 +124,8 @@ const CalendarComponent = () => {
                     className={`relative grid h-full`}
                     style={{
                       gridTemplateRows: `repeat(${totalHours * 2}, minmax(0, 50px))`,
+                      backgroundImage: `linear-gradient(to bottom, transparent 99%, #e5e7eb 99%)`,
+                      backgroundSize: `100% 100px`, // Adjust this to match the row height
                     }}
                   > {/* Modified: 24 rows for 24 hours */}                    
                     {events
@@ -137,7 +139,7 @@ const CalendarComponent = () => {
                         return (
                           <div                             
                             key={event.id}
-                            className={`bg-blue-100 hover:bg-blue-200 rounded-lg p-2 shadow-md overflow-hidden`}
+                            className={`bg-blue-100 hover:bg-blue-200 rounded-lg p-2 shadow-md overflow-hidden `}
                             style={{
                               gridRowStart: rowStart,
                               gridRowEnd: rowEnd
