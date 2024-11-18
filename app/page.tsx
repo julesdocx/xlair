@@ -16,6 +16,9 @@ export default function Home() {
         <div className="w-72 flex flex-col">
           <p className="max-w-72 text-xs tracking-tighter text-center">Xl Air is a platform for anyone who likes to <span className="font-bold">experiment</span> with <span className="font-bold">sound</span>. It is an accessible multidisciplinary hotbed and it is also your playground.</p>
         </div>
+        <div className="w-72 flex flex-col text-base text-blue-400">
+          <a href='https://www.mixcloud.com/XLAIR/' target='_' className="max-w-72 text-md underline tracking-tighter text-center">Relisten on Mixcloud</a>
+        </div>
         <div className="w-72 justify-center flex flex-col gap-8 mt-6">
           <LiveRadioButton />
           <LiveChat/>
