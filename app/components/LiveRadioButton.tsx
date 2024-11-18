@@ -26,12 +26,12 @@ const LiveRadioButton = () => {
       <button onClick={handlePlayPause} className="bg-green-200 p-2 pl-4 pr-4 rounded-xl hover:bg-green-300">
         {isPlaying ? (
           <div className="flex items-center text-black font-bold gap-2">
-            Luister
+            Stop
             <Image src={stopIcon} alt="Stop Button" width={30} height={30} />
           </div>
         ) : (
           <div className="flex items-center text-black font-bold gap-2">
-            Luister
+            Listen
             <Image src={playIcon} alt="Play Button" width={30} height={30} />
           </div>
         )}
