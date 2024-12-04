@@ -3,6 +3,7 @@ import { listCalendars } from '@/app/services/CalendarService';
 
 export async function GET() {
   try {
+    console.log(`GET request at api/calendars`)
     const calendars = await listCalendars();
     console.log("Calendars:", calendars);
     return NextResponse.json(calendars);

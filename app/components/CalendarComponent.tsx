@@ -10,6 +10,15 @@ const CalendarComponent = () => {
 
   // Fetch the events from the API
   useEffect(() => {
+    // const fetchCalendars = async () => {
+    //   try {
+    //     const response = await fetch('api/calendars');
+    //     const rawCalendars = await response.json();
+    //     console.log(rawCalendars);
+    //   } catch(error) {
+    //     console.error(`Error fetching calendars: ${error}`)
+    //   }
+    // };
     const fetchEvents = async () => {
       setLoading(true);
       try {
@@ -31,6 +40,7 @@ const CalendarComponent = () => {
     };
 
     fetchEvents();
+    // fetchCalendars();
   }, []);
 
   // Create an array for the current day and the next 6 days

@@ -1,46 +1,42 @@
-import { google, calendar_v3, Auth } from 'googleapis';
+import { google, calendar_v3 } from 'googleapis';
+import { JWT } from 'google-auth-library';
+import fs from 'fs';
+import path from 'path';
 
-// const SCOPES = ['https://www.googleapis.com/auth/calendar.readonly', 'https://www.googleapis.com/auth/calendar'];
+// Load the service account JSON key
+const serviceAccountKeyPath = path.join(process.cwd(), '../credentials/lofty-hall-408121-2005aeca97fd.json');
+const serviceAccountKey = JSON.parse(fs.readFileSync(serviceAccountKeyPath, 'utf8'));
 
-// Create OAuth2 client using the refresh token
-const createOAuth2Client = () => {
-  const oauth2Client = new Auth.OAuth2Client(
-    process.env.GOOGLE_OAUTH_CLIENT_ID,
-    process.env.GOOGLE_OAUTH_CLIENT_SECRET,
-    `${process.env.NEXTAUTH_URL}/api/auth/google/callback`
-  );
-
-  // Set the refresh token
-  oauth2Client.setCredentials({
-    refresh_token: process.env.GOOGLE_REFRESH_TOKEN,
+// Create JWT client using the service account key
+const createServiceAccountClient = (): JWT => {
+  return new google.auth.JWT({
+    email: serviceAccountKey.client_email,
+    key: serviceAccountKey.private_key,
+    scopes: ['https://www.googleapis.com/auth/calendar.readonly', 'https://www.googleapis.com/auth/calendar'],
   });
-
-  return oauth2Client;
 };
 
-// Create Calendar client
-const createCalendarClient = (auth: Auth.OAuth2Client) => google.calendar({
-  version: 'v3',
-  auth,
-});
+// Create Calendar client using the JWT client
+const createCalendarClient = (auth: JWT): calendar_v3.Calendar => {
+  return google.calendar({ version: 'v3', auth });
+};
 
 // List all accessible calendars
 export const listCalendars = async (): Promise<calendar_v3.Schema$CalendarListEntry[]> => {
-  const oauth2Client = createOAuth2Client();
-  const calendar = createCalendarClient(oauth2Client);
+  console.log(`serviceAccountKey: ${serviceAccountKey}`);
+  const auth = createServiceAccountClient();
+  const calendar = createCalendarClient(auth);
 
   try {
-    console.log("Fetching calendars...");
     const response = await calendar.calendarList.list({
       maxResults: 5,
       showHidden: true,
     });
 
-    console.log(response.data.items);
-
+    console.log('Calendars:', response.data.items);
     return response.data.items || [];
   } catch (error) {
-    console.error('Error fetching calendars: ', error);
+    console.error('Error fetching calendars:', error);
     throw error;
   }
 };
@@ -50,31 +46,22 @@ export const listEvents = async (
   timeMin: string = new Date().toISOString(),
   timeMax: string = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString() // Default: 30 days from now
 ): Promise<calendar_v3.Schema$Event[]> => {
-  const oauth2Client = createOAuth2Client();
-  const calendar = createCalendarClient(oauth2Client);
+  const auth = createServiceAccountClient();
+  const calendar = createCalendarClient(auth);
 
   try {
-    console.log("Fetching events from calendar:", process.env.GOOGLE_CALENDAR_ID);
     const response = await calendar.events.list({
-      calendarId: process.env.GOOGLE_CALENDAR_ID,  // Make sure this ID is correct
+      calendarId: process.env.GOOGLE_CALENDAR_ID,  // Replace with your fixed calendar ID
       timeMin,
       timeMax,
       singleEvents: true,
       orderBy: 'startTime',
     });
-    
-    const logArray: { title: string | null | undefined; start: calendar_v3.Schema$EventDateTime | undefined; end: calendar_v3.Schema$EventDateTime | undefined; }[] | undefined = response.data.items?.map((item) => {
-      return {
-        title: item.summary,
-        start: item.start,
-        end: item.end
-      };
-    })
-    console.log(logArray);
 
+    console.log('Events:', response.data.items);
     return response.data.items || [];
   } catch (error) {
-    console.error('Error fetching calendar events:', error);
+    console.error('Error fetching events:', error);
     throw error;
   }
 };

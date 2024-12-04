@@ -16,6 +16,9 @@
 # next.js auth routes
 # /app/api/auth/*
 
+# API credentials
+/app/credentials
+
 # production
 /build
 
