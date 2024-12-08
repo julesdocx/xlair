@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { CalendarEvent } from '../types';
 import { dateInDutch, formatEvents } from '../utils';
-import { addDays, format, isSameDay, isAfter, startOfDay, getHours, getMinutes} from 'date-fns';
+import { addDays, format, isSameDay, isAfter, startOfDay, getHours, getMinutes } from 'date-fns';
 
 const CalendarComponent = () => {
   const [events, setEvents] = useState<CalendarEvent[]>([]);
@@ -22,7 +22,18 @@ const CalendarComponent = () => {
     const fetchEvents = async () => {
       setLoading(true);
       try {
-        const response = await fetch('/api/events');
+        // Define the time range
+        const timeMin = new Date().toISOString();
+        const timeMax = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(); // 7 days from now
+
+        const response = await fetch(`/api/events?timeMin=${encodeURIComponent(timeMin)}&timeMax=${encodeURIComponent(timeMax)}`, {
+          cache: "no-store"
+        });
+        if (!response.ok) {
+          console.error('Failed to fetch events:', response.statusText);
+          return;
+        }
+        console.log(response)
         const rawEvents = await response.json();
         const formattedEvents = formatEvents(rawEvents);
 
@@ -58,7 +69,7 @@ const CalendarComponent = () => {
   const hours = Array.from({ length: totalHours }, (_, i) => earliestHour + i); // Modified
 
   console.log(`earliest hour: ${earliestHour}\nhours: ${hours}`);
-   
+
   // Utility function to handle row calculation
   const calculateRowPosition = (title: string, date: Date, isEnd: boolean = false) => {
     const hour = getHours(date);
@@ -126,18 +137,18 @@ const CalendarComponent = () => {
               </div>
 
               {days.map(day => (
-                <div key={day.toString()} className="col-span-1 relative border-l border-gray-200"> {/* Modified: Grid for each day */}                  
+                <div key={day.toString()} className="col-span-1 relative border-l border-gray-200"> {/* Modified: Grid for each day */}
                   <h2 className="text-center text-lg font-semibold py-2 border-b sticky top-0">
                     {dateInDutch(day)}
                   </h2>
-                  <div 
+                  <div
                     className={`relative grid h-full`}
                     style={{
                       gridTemplateRows: `repeat(${totalHours * 2}, minmax(0, 50px))`,
                       backgroundImage: `linear-gradient(to bottom, transparent 99%, #e5e7eb 99%)`,
                       backgroundSize: `100% 100px`, // Adjust this to match the row height
                     }}
-                  > {/* Modified: 24 rows for 24 hours */}                    
+                  > {/* Modified: 24 rows for 24 hours */}
                     {events
                       .filter(event => isSameDay(new Date(event.startTime), day))
                       .map(event => {
@@ -147,7 +158,7 @@ const CalendarComponent = () => {
                         const rowEnd = calculateRowPosition(event.title, eventEnd, true);
 
                         return (
-                          <div                             
+                          <div
                             key={event.id}
                             className={`bg-blue-100 hover:bg-blue-200 rounded-lg p-2 shadow-md overflow-hidden `}
                             style={{
@@ -156,19 +167,19 @@ const CalendarComponent = () => {
                             }}
 
                           >
-                          <a
-                            href={event.htmlLink || ""}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-black "
-                          >
-                            <p className="font-bold">{event.title}</p>
-                            <p className="text-sm">
-                              {format(new Date(event.startTime), 'p')} -{' '}
-                              {format(new Date(event.endTime), 'p')}
-                            </p>
-                            <p className="text-xs text-gray-600 truncate">{event.description}</p>
-                          </a>
+                            <a
+                              href={event.htmlLink || ""}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-black "
+                            >
+                              <p className="font-bold">{event.title}</p>
+                              <p className="text-sm">
+                                {format(new Date(event.startTime), 'p')} -{' '}
+                                {format(new Date(event.endTime), 'p')}
+                              </p>
+                              <p className="text-xs text-gray-600 truncate">{event.description}</p>
+                            </a>
                           </div>
                         );
                       })}
